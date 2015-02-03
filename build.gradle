@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 group = 'org.jbake'
-version = '2.3.2-uli1'
+version = '2.3.2-uli2'
 
 description = """jbake"""
 
