@@ -117,6 +117,9 @@ distributions {
     main {
         contents {
           from(zipExampleProjects)
+	  into("lib") {
+            from "src/main/logging/logback.xml"
+          }
         }
     }
 }
