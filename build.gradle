@@ -1,10 +1,14 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'application'
 
 group = 'org.jbake'
 version = '2.4.0-uli1'
 
 description = """jbake"""
+
+mainClassName="org.jbake.launcher.Main"
+applicationName="jbake" // used for the start script
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -83,5 +87,38 @@ task cloneExampleProjectThymeleaf(type: com.palominolabs.gradle.task.git.clone.G
 }
 
 task cloneExampleProjects(dependsOn: [cloneExampleProjectFreemarker, cloneExampleProjectGroovy, cloneExampleProjectThymeleaf])
+
+task zipExampleProjectFreemarker(type: Zip, dependsOn: cloneExampleProjectFreemarker) {
+  archiveName = "example-project-freemarker.zip"
+  from "${buildDir}/example-project-freemarker"
+  exclude "README.md"
+  exclude "LICENSE"
+}
+task zipExampleProjectGroovy(type: Zip, dependsOn: cloneExampleProjectGroovy) {
+  archiveName = "example-project-groovy.zip"
+  from "${buildDir}/example-project-groovy"
+  exclude "README.md"
+  exclude "LICENSE"
+}
+task zipExampleProjectThymeleaf(type: Zip, dependsOn: cloneExampleProjectThymeleaf) {
+  archiveName = "example-project-thymeleaf.zip"
+  from "${buildDir}/example-project-thymeleaf"
+  exclude "README.md"
+  exclude "LICENSE"
+}
+
+task zipExampleProjects(dependsOn: [zipExampleProjectFreemarker, zipExampleProjectGroovy, zipExampleProjectThymeleaf]) {
+  outputs.files "${distsDir}/example-project-freemarker.zip";
+  outputs.files "${distsDir}/example-project-groovy.zip";
+  outputs.files "${distsDir}/example-project-thymeleaf.zip";
+}
+
+distributions {
+    main {
+        contents {
+          from(zipExampleProjects)
+        }
+    }
+}
 
 test.dependsOn cloneExampleProjects
