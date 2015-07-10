@@ -17,6 +17,17 @@ repositories {
      //maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
      maven { url "http://repo.maven.apache.org/maven2" }
 }
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'com.palominolabs.gradle.task:gradle-git-clone-task:0.0.2'
+  }
+}
+
 dependencies {
     compile group: 'commons-io', name: 'commons-io', version:'2.4'
     compile group: 'commons-configuration', name: 'commons-configuration', version:'1.9'
@@ -46,3 +57,23 @@ uploadArchives {
         }
     }
 }
+
+task cloneExampleProjectFreemarker(type: com.palominolabs.gradle.task.git.clone.GitCloneTask) {
+  dir = file("$buildDir/example-project-freemarker")
+  uri = 'git@github.com:jbake-org/jbake-example-project-freemarker.git'
+  treeish = 'origin/master' // a git hash, or tag name, or branch name
+}
+task cloneExampleProjectGroovy(type: com.palominolabs.gradle.task.git.clone.GitCloneTask) {
+  dir = file("$buildDir/example-project-groovy")
+  uri = 'git@github.com:jbake-org/jbake-example-project-groovy.git'
+  treeish = 'origin/master' // a git hash, or tag name, or branch name
+}
+task cloneExampleProjectThymeleaf(type: com.palominolabs.gradle.task.git.clone.GitCloneTask) {
+  dir = file("$buildDir/example-project-thymeleaf")
+  uri = 'git@github.com:jbake-org/jbake-example-project-thymeleaf.git'
+  treeish = 'origin/master' // a git hash, or tag name, or branch name
+}
+
+task cloneExampleProjects(dependsOn: [cloneExampleProjectFreemarker, cloneExampleProjectGroovy, cloneExampleProjectThymeleaf])
+
+test.dependsOn cloneExampleProjects
