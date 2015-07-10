@@ -9,6 +9,14 @@ description = """jbake"""
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
+sourceSets {
+   test {
+     //if you truly want to override the defaults:
+     output.resourcesDir = 'build/classes/test'
+     output.classesDir   = 'build/classes/test'
+   }
+}
+
 configurations.all {
 }
 
